@@ -54,7 +54,7 @@
   <div class="wrap">
     <header class="cabecera">
       <h1>RAG vs PLAYER <span class="blink">_</span></h1>
-      <small>Street Fighter II UI • Node.js + Ollama + Fetch</small>
+      <small>IA de Street Fighter II</small>
     </header>
 
     <section class="versus">
@@ -62,7 +62,7 @@
         <div class="avatar"><span>🧑‍💻</span></div>
         <div class="stats">
           <div class="tag">Player</div>
-          <div class="name">Sebastián</div>
+          <div class="name">Jugador</div>
           <div class="bar"><i style="width: 88%"></i></div>
         </div>
       </div>
@@ -106,7 +106,7 @@
       </div>
     </section>
 
-    <footer class="footer">© 2025 – Demo RAG SFII UI. Hecho con ❤ y nostalgia arcade.</footer>
+    <footer class="footer">IA de Street Fighter 2 Experimental</footer>
   </div>
 
   <script>
@@ -124,7 +124,7 @@
       const ep = endpoint.value.trim(); const question = q.value.trim();
       if(!question){ q.focus(); return; }
       askBtn.disabled = true; askBtn.textContent='CARGANDO…'; meta.innerHTML=''; cites.innerHTML='';
-      await typewriter(ans,'Invocando al maestro RAG…');
+      await typewriter(ans,'Invocando a la mente maestra IA...');
       try{
         const payload = {
           question,
