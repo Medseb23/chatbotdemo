@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RAG vs. Player — SFII UI</title>
+  <title>STREET • RAG • II</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
@@ -17,13 +17,11 @@
     html,body{height:100%}
     body{
       margin:0; color:var(--text); font-family:'Press Start 2P',system-ui,monospace; letter-spacing:.4px;
-      /* Fondo SF2 + capa de color para legibilidad */
       background:
         radial-gradient(1200px 600px at 50% -20%, rgba(0,0,0,.35) 0%, rgba(0,0,0,.75) 60%, rgba(0,0,0,.95) 100%),
         url("./sf2background.jpg") center / cover fixed no-repeat;
       display:grid; place-items:center; overflow-x:hidden;
     }
-    /* Vignette + scanlines CRT */
     body::before{
       content:""; position:fixed; inset:0; pointer-events:none;
       background:
@@ -33,73 +31,40 @@
     }
 
     .wrap{ width:min(1100px,92vw); margin:auto; display:grid; gap:14px; }
-    .cabecera{
-      text-align:center; margin-bottom:6px;
-      text-shadow:0 0 10px #ffd966, 0 0 20px #ff7a00;
-      backdrop-filter:saturate(130%);
-    }
-    .logo{
-      font-size: clamp(20px,3.8vw,40px); margin:8px 0 4px;
-      color: var(--arcade-yellow); transform:skew(-6deg); letter-spacing:1.2px;
-    }
+    .cabecera{ text-align:center; margin-bottom:6px; text-shadow:0 0 10px #ffd966, 0 0 20px #ff7a00; }
+    .logo{ font-size: clamp(20px,3.8vw,40px); margin:8px 0 4px; color: var(--arcade-yellow); transform:skew(-6deg); letter-spacing:1.2px; }
     .blink{ animation: blink 1s steps(1) infinite; }
     @keyframes blink{ 50%{opacity:0} }
     .sub{ font-size:10px; opacity:.85; }
 
-    /* Cinta VS con “máscara” SF */
-    .versus{
-      display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; gap:14px;
-      filter: drop-shadow(0 10px 30px rgba(0,0,0,.6));
-    }
-    .fighter{
-      background: linear-gradient(180deg, var(--glass) 0, var(--glass-2) 100%);
-      border: 2px solid #2b3370; border-radius:16px; padding:14px;
-      display:grid; grid-template-columns:64px 1fr; gap:12px;
-      box-shadow: 0 0 0 3px rgba(0,0,0,.75) inset;
-      backdrop-filter: blur(2px) saturate(120%);
-    }
-    .avatar{ width:64px; height:64px; border-radius:10px; overflow:hidden;
-      border:2px solid #5f6bd3; display:grid; place-items:center;
-      background:linear-gradient(145deg,#2b2f61,#15183a); font-size:22px;
-    }
+    .versus{ position:relative; z-index:2; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:14px; filter: drop-shadow(0 10px 30px rgba(0,0,0,.6)); }
+    .fighter{ background: linear-gradient(180deg, var(--glass) 0, var(--glass-2) 100%); border: 2px solid #2b3370; border-radius:16px; padding:14px;
+      display:grid; grid-template-columns:64px 1fr; gap:12px; box-shadow: 0 0 0 3px rgba(0,0,0,.75) inset; backdrop-filter: blur(2px) saturate(120%); min-width:0; }
+    .avatar{ width:64px; height:64px; border-radius:10px; overflow:hidden; border:2px solid #5f6bd3; display:grid; place-items:center;
+      background:linear-gradient(145deg,#2b2f61,#15183a); font-size:22px; }
     .stats{ display:grid; gap:6px }
     .tag{ font-size:10px; color:var(--arcade-cyan) }
     .name{ font-size:13px; color:var(--arcade-yellow) }
     .bar{ height:10px; background:#15193a; border:2px solid #2b3370; border-radius:6px; overflow:hidden }
     .bar>i{ display:block; height:100%; background: linear-gradient(90deg,#33ebff,#4bff87) }
+    .vs{ font-size: clamp(18px,4.2vw,40px); color: var(--arcade-red); text-shadow: 0 0 6px #fff, 0 0 18px var(--arcade-red); transform: skew(-10deg) translateY(-2px); }
 
-    .vs{
-      font-size: clamp(18px,4.2vw,40px); color: var(--arcade-red);
-      text-shadow: 0 0 6px #fff, 0 0 18px var(--arcade-red);
-      transform: skew(-10deg) translateY(-2px);
-    }
-
-    /* Panel principal estilo “cabina” */
-    .panel{
-      background: linear-gradient(180deg, rgba(10,12,28,.94), rgba(6,8,18,.94));
-      border: 2px solid #2b3370; border-radius:16px; padding:14px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.55), 0 0 0 3px rgba(0,0,0,.7) inset;
-      position:relative; overflow:hidden;
-    }
-    .panel::after{ /* glow superior */
-      content:""; position:absolute; left:0; right:0; top:-40px; height:80px;
+    .panel{ background: linear-gradient(180deg, rgba(10,12,28,.94), rgba(6,8,18,.94)); border: 2px solid #2b3370; border-radius:16px; padding:14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.55), 0 0 0 3px rgba(0,0,0,.7) inset; position:relative; z-index:1; overflow:hidden; }
+    .panel::after{ content:""; position:absolute; left:0; right:0; top:-40px; height:80px;
       background: radial-gradient(600px 60px at 50% 100%, rgba(255,229,77,.35), transparent 70%);
       pointer-events:none; filter: blur(12px);
     }
 
     .input-row{ display:grid; grid-template-columns:1fr auto; gap:10px; align-items:stretch }
-    textarea{
-      width:100%; min-height:110px; resize:vertical; background:#0c0f21; color:var(--text);
+    textarea{ width:100%; min-height:110px; resize:vertical; background:#0c0f21; color:var(--text);
       border:2px solid #3b417a; border-radius:12px; padding:12px; font-family:inherit; font-size:12px; line-height:1.5;
-      outline:none; box-shadow: inset 0 0 0 2px #000;
-    }
+      outline:none; box-shadow: inset 0 0 0 2px #000; }
     textarea:focus{ border-color:var(--arcade-blue); box-shadow:0 0 0 3px rgba(80,227,194,.2) }
 
-    .btn{
-      font-family:inherit; font-weight:700; letter-spacing:.6px; font-size:12px; padding:14px 18px; border-radius:12px;
+    .btn{ font-family:inherit; font-weight:700; letter-spacing:.6px; font-size:12px; padding:14px 18px; border-radius:12px;
       background: linear-gradient(180deg,#ffcf33,#f77f00); color:#000; border:0; cursor:pointer;
-      box-shadow: 0 6px 0 #8c3b00, 0 12px 22px rgba(0,0,0,.45); transition:.15s; transform: translateY(0);
-    }
+      box-shadow: 0 6px 0 #8c3b00, 0 12px 22px rgba(0,0,0,.45); transition:.15s; transform: translateY(0); }
     .btn:hover{ filter: brightness(1.06) }
     .btn:active{ transform: translateY(2px); box-shadow: 0 4px 0 #8c3b00, 0 6px 16px rgba(0,0,0,.45) }
 
@@ -110,15 +75,8 @@
     .field label{ display:block; margin-bottom:4px; color:#a4b3ff }
     .field input{ width:100%; background:#060816; color:var(--text); border:1px solid #394080; border-radius:8px; padding:6px 8px; font-family:inherit; font-size:11px }
 
-    /* Bocadillo tipo SF */
-    .dialog{
-      margin-top:12px; position:relative; background:#0b0e20; border:2px solid #2a2f55; border-radius:12px; padding:12px 12px 14px;
-      box-shadow: 0 0 0 2px #000 inset;
-    }
-    .dialog::before{
-      content:""; position:absolute; left:22px; top:-10px; width:16px; height:16px; background:#0b0e20;
-      border-left:2px solid #2a2f55; border-top:2px solid #2a2f55; transform:rotate(45deg);
-    }
+    .dialog{ margin-top:12px; position:relative; background:#0b0e20; border:2px solid #2a2f55; border-radius:12px; padding:12px 12px 14px; box-shadow: 0 0 0 2px #000 inset; }
+    .dialog::before{ content:""; position:absolute; left:22px; top:-10px; width:16px; height:16px; background:#0b0e20; border-left:2px solid #2a2f55; border-top:2px solid #2a2f55; transform:rotate(45deg); }
     .who{ display:flex; align-items:center; gap:10px; margin-bottom:8px; font-size:12px; color: var(--arcade-cyan) }
     .who .p{ width:26px; height:26px; border-radius:6px; background:#182052; display:grid; place-items:center; border:1px solid #3950c6 }
     .txt{ font-size:12px; line-height:1.6; min-height:32px }
@@ -127,14 +85,14 @@
     .cites{ margin-top:10px; font-size:11px }
     .cites a{ color: var(--arcade-yellow); text-decoration: underline }
 
-    .footer{ margin: 14px auto 4px; text-align:center; font-size:10px; opacity:.7 }
+    .footer{ margin:14px auto 4px; text-align:center; font-size:10px; opacity:.7 }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header class="cabecera">
       <div class="logo">STREET • RAG • II <span class="blink">_</span></div>
-      <div class="sub">Node.js + Ollama + Fetch • Máscara estilo SFII</div>
+      <div class="sub">IA Especializada en Street Fighter 2 • Consulta!</div>
     </header>
 
     <section class="versus">
@@ -186,7 +144,7 @@
       </div>
     </section>
 
-    <footer class="footer">© 2025 – Demo RAG SFII UI. Hecho con ❤ y nostalgia arcade.</footer>
+    <footer class="footer">© 2025 – Hecho con ❤ arcade • Versión Experimental de IA OnPremise</footer>
   </div>
 
   <script>
@@ -217,7 +175,7 @@
           max_tokens: Number($('#max_tokens').value),
           top_p: Number($('#top_p').value),
           repeat_penalty: Number($('#repeat_penalty').value),
-          style: "concise",   // tu server soporta "concise" | "full"
+          style: "concise",
           stream: false
         };
 
@@ -243,16 +201,13 @@
           }).join(' · ');
         }
 
-        // Botón “Ver más” si server avisa truncado
         if (data.truncated) {
           const more = document.createElement('button');
           more.className = 'btn'; more.style.marginTop = '10px'; more.textContent = 'VER MÁS';
           more.onclick = async ()=>{
             more.disabled = true; more.textContent = 'CARGANDO…';
-            const r2 = await fetch(ep,{ method:'POST', headers:{'Content-Type':'application/json'},
-              body: JSON.stringify({ ...payload, style:'full' })});
-            const d2 = await r2.json(); ans.innerHTML = d2.answer || answer;
-            more.remove();
+            const r2 = await fetch(ep,{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ ...payload, style:'full' })});
+            const d2 = await r2.json(); ans.innerHTML = d2.answer || answer; more.remove();
           };
           cites.appendChild(document.createElement('br'));
           cites.appendChild(more);
